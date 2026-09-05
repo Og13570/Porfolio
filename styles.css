@@ -303,6 +303,39 @@ a {
 .cursor-preview[data-swatch="4"] { background: linear-gradient(135deg, #C7CDFF, #2A3EFF); }
 
 /* ===================================================================
+   Playground — interactive canvas piece
+   =================================================================== */
+.playground {
+  position: relative;
+  z-index: 1;
+  border-bottom: 1px solid var(--line);
+}
+
+.playground-frame {
+  margin: 0 var(--gutter) clamp(2.5rem, 6vw, 4rem);
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  position: relative;
+}
+
+#field-canvas {
+  display: block;
+  width: 100%;
+  height: clamp(320px, 52vw, 560px);
+  cursor: crosshair;
+}
+
+.playground-caption {
+  margin: 0;
+  padding: 0.9rem 1.1rem;
+  border-top: 1px solid rgba(231, 228, 220, 0.18);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--accent-soft);
+  max-width: 56ch;
+}
+
+/* ===================================================================
    About
    =================================================================== */
 .about {
