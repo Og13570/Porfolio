@@ -12,15 +12,15 @@
 </head>
 <body>
 
-  <div class="grid-overlay" aria-hidden="true"></div>
+  <canvas id="ambient-canvas" aria-hidden="true"></canvas>
 
   <header class="site-header">
-    <a class="mark" href="#top">[YN]</a>
+    <a class="mark" href="#top" data-scramble>[YN]</a>
     <nav class="site-nav">
-      <a href="#work">Work</a>
-      <a href="#play">Play</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
+      <a href="#work" data-scramble>Work</a>
+      <a href="#play" data-scramble>Play</a>
+      <a href="#about" data-scramble>About</a>
+      <a href="#contact" data-scramble>Contact</a>
     </nav>
   </header>
 
@@ -28,9 +28,10 @@
 
     <section class="hero">
       <p class="hero-meta">Design portfolio — 2026 edition</p>
-      <h1 class="hero-name">
-        <span>[Your</span>
-        <span>Name]</span>
+      <h1 class="hero-name glitch">
+        <span class="glitch-layer glitch-base">[Your Name]</span>
+        <span class="glitch-layer glitch-cyan" aria-hidden="true">[Your Name]</span>
+        <span class="glitch-layer glitch-violet" aria-hidden="true">[Your Name]</span>
       </h1>
       <p class="hero-role">Designer working across brand systems, product, and print. Based in [City]. Open for [freelance / full-time] work.</p>
     </section>
@@ -51,35 +52,50 @@
     <section class="work" id="work">
       <div class="section-head">
         <h2>Selected work</h2>
-        <p>04 projects — hover a row to preview</p>
+        <p>04 projects, encased — hover to break the ice</p>
       </div>
 
-      <ul class="work-list">
-        <li class="work-row" data-swatch="1">
-          <span class="work-index">01</span>
-          <span class="work-title">Ora — grocery delivery rebrand</span>
-          <span class="work-tags">Identity, packaging</span>
-          <span class="work-year">2025</span>
-        </li>
-        <li class="work-row" data-swatch="2">
-          <span class="work-index">02</span>
-          <span class="work-title">Fieldnote — journaling app</span>
-          <span class="work-tags">Product, UI system</span>
-          <span class="work-year">2024</span>
-        </li>
-        <li class="work-row" data-swatch="3">
-          <span class="work-index">03</span>
-          <span class="work-title">Almanac — quarterly print journal</span>
-          <span class="work-tags">Editorial, typography</span>
-          <span class="work-year">2024</span>
-        </li>
-        <li class="work-row" data-swatch="4">
-          <span class="work-index">04</span>
-          <span class="work-title">Kiln — ceramics studio site</span>
-          <span class="work-tags">Web, art direction</span>
-          <span class="work-year">2023</span>
-        </li>
-      </ul>
+      <div class="ice-grid">
+        <article class="ice-block ice-block--wide" data-swatch="1">
+          <div class="ice-block-visual">
+            <span class="ice-block-index">01</span>
+          </div>
+          <div class="ice-block-info">
+            <h3 data-scramble>Ora — grocery delivery rebrand</h3>
+            <p class="ice-block-tags">Identity, packaging — 2025</p>
+          </div>
+        </article>
+
+        <article class="ice-block" data-swatch="2">
+          <div class="ice-block-visual">
+            <span class="ice-block-index">02</span>
+          </div>
+          <div class="ice-block-info">
+            <h3 data-scramble>Fieldnote — journaling app</h3>
+            <p class="ice-block-tags">Product, UI system — 2024</p>
+          </div>
+        </article>
+
+        <article class="ice-block" data-swatch="3">
+          <div class="ice-block-visual">
+            <span class="ice-block-index">03</span>
+          </div>
+          <div class="ice-block-info">
+            <h3 data-scramble>Almanac — quarterly print journal</h3>
+            <p class="ice-block-tags">Editorial, typography — 2024</p>
+          </div>
+        </article>
+
+        <article class="ice-block ice-block--wide" data-swatch="4">
+          <div class="ice-block-visual">
+            <span class="ice-block-index">04</span>
+          </div>
+          <div class="ice-block-info">
+            <h3 data-scramble>Kiln — ceramics studio site</h3>
+            <p class="ice-block-tags">Web, art direction — 2023</p>
+          </div>
+        </article>
+      </div>
     </section>
 
     <section class="playground" id="play">
@@ -120,11 +136,11 @@
       <div class="section-head">
         <h2>Get in touch</h2>
       </div>
-      <a class="contact-link" href="mailto:hello@example.com">hello@example.com</a>
+      <a class="contact-link" href="mailto:hello@example.com" data-scramble>hello@example.com</a>
       <div class="contact-social">
-        <a href="https://github.com/yourusername" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://instagram.com/yourusername" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://github.com/yourusername" target="_blank" rel="noopener" data-scramble>GitHub</a>
+        <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener" data-scramble>LinkedIn</a>
+        <a href="https://instagram.com/yourusername" target="_blank" rel="noopener" data-scramble>Instagram</a>
       </div>
     </section>
 
@@ -132,10 +148,8 @@
 
   <footer class="site-footer">
     <p>[Your Name], [Year]</p>
-    <a href="#top">Back to top</a>
+    <a href="#top" data-scramble>Back to top</a>
   </footer>
-
-  <div class="cursor-preview" aria-hidden="true"></div>
 
   <script src="script.js"></script>
 </body>
