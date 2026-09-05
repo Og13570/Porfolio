@@ -2,19 +2,21 @@
    Design tokens
    =================================================================== */
 :root {
-  --paper: #E7E4DC;
-  --ink: #16150F;
-  --ink-soft: #55534A;
-  --accent: #2A3EFF;
-  --accent-soft: #C7CDFF;
-  --line: #B6B2A6;
+  --void: #05070A;
+  --panel: #0D1319;
+  --frost: rgba(234, 243, 250, 0.05);
+  --frost-border: rgba(234, 243, 250, 0.14);
+  --ice: #EAF3FA;
+  --ice-dim: #7E93A3;
+  --cyan: #4FE8FF;
+  --violet: #8C6CFF;
+  --line: rgba(234, 243, 250, 0.14);
 
   --font-display: "Bricolage Grotesque", sans-serif;
   --font-body: "IBM Plex Sans", sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
 
   --gutter: 6vw;
-  --grid-cols: 12;
 }
 
 * { box-sizing: border-box; }
@@ -30,8 +32,8 @@ html {
 
 body {
   margin: 0;
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--void);
+  color: var(--ice);
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.5;
@@ -45,20 +47,19 @@ a {
 }
 
 ::selection {
-  background: var(--accent);
-  color: var(--paper);
+  background: var(--cyan);
+  color: var(--void);
 }
 
-/* faint specimen-sheet grid, purely decorative */
-.grid-overlay {
+/* fixed ambient particle field behind everything */
+#ambient-canvas {
   position: fixed;
   inset: 0;
-  pointer-events: none;
+  width: 100%;
+  height: 100%;
   z-index: 0;
-  background-image:
-    linear-gradient(to right, rgba(22,21,15,0.05) 1px, transparent 1px);
-  background-size: calc((100% - 2 * var(--gutter)) / var(--grid-cols)) 100%;
-  background-position: var(--gutter) 0;
+  pointer-events: none;
+  opacity: 0.55;
 }
 
 /* ===================================================================
@@ -73,6 +74,8 @@ a {
   padding: 1.75rem var(--gutter);
   font-family: var(--font-mono);
   font-size: 0.85rem;
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(6px);
 }
 
 .mark {
@@ -80,6 +83,7 @@ a {
   font-weight: 700;
   font-size: 1.1rem;
   letter-spacing: -0.02em;
+  color: var(--ice);
 }
 
 .site-nav {
@@ -90,28 +94,16 @@ a {
 .site-nav a {
   position: relative;
   padding-bottom: 2px;
+  color: var(--ice-dim);
+  transition: color 0.2s ease;
 }
 
-.site-nav a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -1px;
-  width: 100%;
-  height: 1px;
-  background: var(--ink);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.25s ease;
-}
-
-.site-nav a:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
+.site-nav a:hover {
+  color: var(--cyan);
 }
 
 /* ===================================================================
-   Hero
+   Hero + glitch title
    =================================================================== */
 .hero {
   position: relative;
@@ -123,38 +115,86 @@ a {
 .hero-meta {
   font-family: var(--font-mono);
   font-size: 0.8rem;
-  color: var(--ink-soft);
+  color: var(--cyan);
   margin: 0 0 1.25rem;
 }
 
-.hero-name {
+.hero-name.glitch {
+  position: relative;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(3.5rem, 12vw, 9rem);
-  line-height: 0.88;
+  font-size: clamp(3rem, 11vw, 8rem);
+  line-height: 0.95;
   letter-spacing: -0.03em;
   margin: 0 0 1.5rem;
-  display: flex;
-  flex-direction: column;
+  display: block;
+}
+
+.glitch-layer {
+  display: block;
+}
+
+.glitch-cyan,
+.glitch-violet {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.glitch-cyan { color: var(--cyan); mix-blend-mode: screen; }
+.glitch-violet { color: var(--violet); mix-blend-mode: screen; }
+
+/* one orchestrated glitch burst on load, then it settles */
+.glitch.glitch-run .glitch-cyan {
+  animation: glitch-shift-cyan 0.6s steps(2, end) 1;
+}
+.glitch.glitch-run .glitch-violet {
+  animation: glitch-shift-violet 0.6s steps(2, end) 1;
+}
+
+/* a second, subtler burst on hover */
+.glitch:hover .glitch-cyan {
+  animation: glitch-shift-cyan 0.4s steps(2, end) 1;
+}
+.glitch:hover .glitch-violet {
+  animation: glitch-shift-violet 0.4s steps(2, end) 1;
+}
+
+@keyframes glitch-shift-cyan {
+  0%   { opacity: 0; transform: translate(0, 0); }
+  20%  { opacity: 0.8; transform: translate(3px, -2px); }
+  40%  { opacity: 0.6; transform: translate(-2px, 1px); }
+  60%  { opacity: 0.8; transform: translate(2px, 2px); }
+  100% { opacity: 0; transform: translate(0, 0); }
+}
+
+@keyframes glitch-shift-violet {
+  0%   { opacity: 0; transform: translate(0, 0); }
+  20%  { opacity: 0.7; transform: translate(-3px, 2px); }
+  40%  { opacity: 0.5; transform: translate(2px, -1px); }
+  60%  { opacity: 0.7; transform: translate(-2px, -2px); }
+  100% { opacity: 0; transform: translate(0, 0); }
 }
 
 .hero-role {
   max-width: 42ch;
   font-size: 1.05rem;
-  color: var(--ink-soft);
+  color: var(--ice-dim);
   margin: 0;
 }
 
 /* ===================================================================
-   Marquee — the one orchestrated motion moment
+   Marquee
    =================================================================== */
 .marquee {
   position: relative;
   z-index: 1;
   overflow: hidden;
   border-bottom: 1px solid var(--line);
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--panel);
   padding: 0.85rem 0;
 }
 
@@ -169,7 +209,7 @@ a {
 }
 
 .marquee-track span {
-  color: var(--accent-soft);
+  color: var(--cyan);
 }
 
 @keyframes scroll-left {
@@ -200,12 +240,12 @@ a {
 .section-head p {
   font-family: var(--font-mono);
   font-size: 0.8rem;
-  color: var(--ink-soft);
+  color: var(--ice-dim);
   margin: 0;
 }
 
 /* ===================================================================
-   Work list
+   Ice blocks — project grid
    =================================================================== */
 .work {
   position: relative;
@@ -213,94 +253,108 @@ a {
   border-bottom: 1px solid var(--line);
 }
 
-.work-list {
-  list-style: none;
-  margin: 0;
-  padding: 0 var(--gutter) 1rem;
-}
-
-.work-row {
+.ice-grid {
   display: grid;
-  grid-template-columns: 3rem 1fr auto auto;
-  align-items: baseline;
-  gap: 1.5rem;
-  padding: 1.35rem 0;
-  border-top: 1px solid var(--line);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  margin: 0 var(--gutter) clamp(2.5rem, 6vw, 4rem);
+  border: 1px solid var(--line);
+}
+
+.ice-block {
+  position: relative;
+  background: var(--panel);
+  overflow: hidden;
   cursor: pointer;
-  transition: padding-left 0.2s ease, color 0.2s ease;
 }
 
-.work-row:last-child {
-  border-bottom: 1px solid var(--line);
+.ice-block--wide {
+  grid-column: span 2;
 }
 
-.work-row:hover {
-  padding-left: 0.75rem;
-  color: var(--accent);
+@media (max-width: 780px) {
+  .ice-grid { grid-template-columns: 1fr; }
+  .ice-block--wide { grid-column: span 1; }
 }
 
-.work-index {
+.ice-block-visual {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background:
+    linear-gradient(135deg, rgba(79, 232, 255, 0.16), rgba(140, 108, 255, 0.10)),
+    var(--panel);
+  display: flex;
+  align-items: flex-end;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+/* frosted glass sheen */
+.ice-block-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(234,243,250,0.10) 0%, transparent 35%, transparent 65%, rgba(234,243,250,0.06) 100%);
+  transition: transform 0.5s ease;
+}
+
+/* chromatic aberration ghosts of the swatch, revealed on hover */
+.ice-block-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.ice-block:hover .ice-block-visual::before {
+  transform: translateX(8%);
+}
+
+.ice-block:hover .ice-block-visual::after {
+  opacity: 0.5;
+  transform: translate(3px, -2px);
+  filter: hue-rotate(40deg) saturate(1.4);
+}
+
+.ice-block-index {
+  position: relative;
+  z-index: 1;
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  color: var(--ink-soft);
+  color: var(--ice);
+  background: rgba(5, 7, 10, 0.55);
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--frost-border);
 }
 
-.work-row:hover .work-index {
-  color: var(--accent);
+.ice-block-info {
+  padding: 1.1rem 1.25rem 1.35rem;
+  border-top: 1px solid var(--line);
 }
 
-.work-title {
+.ice-block-info h3 {
+  margin: 0 0 0.35rem;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
   letter-spacing: -0.01em;
+  transition: color 0.2s ease;
 }
 
-.work-tags {
+.ice-block:hover .ice-block-info h3 {
+  color: var(--cyan);
+}
+
+.ice-block-tags {
+  margin: 0;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--ink-soft);
-  justify-self: end;
+  font-size: 0.78rem;
+  color: var(--ice-dim);
 }
-
-.work-year {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--ink-soft);
-}
-
-@media (max-width: 640px) {
-  .work-row {
-    grid-template-columns: 2rem 1fr;
-    row-gap: 0.35rem;
-  }
-  .work-tags, .work-year { justify-self: start; }
-}
-
-/* floating cursor preview swatch — replace bg gradients with real project images */
-.cursor-preview {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 220px;
-  height: 150px;
-  pointer-events: none;
-  z-index: 10;
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.92);
-  transition: opacity 0.18s ease, transform 0.18s ease;
-  border: 1px solid var(--ink);
-}
-
-.cursor-preview.visible {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.cursor-preview[data-swatch="1"] { background: linear-gradient(135deg, #2A3EFF, #C7CDFF); }
-.cursor-preview[data-swatch="2"] { background: linear-gradient(135deg, #16150F, #55534A); }
-.cursor-preview[data-swatch="3"] { background: linear-gradient(135deg, #E7E4DC, #B6B2A6); }
-.cursor-preview[data-swatch="4"] { background: linear-gradient(135deg, #C7CDFF, #2A3EFF); }
 
 /* ===================================================================
    Playground — interactive canvas piece
@@ -313,8 +367,8 @@ a {
 
 .playground-frame {
   margin: 0 var(--gutter) clamp(2.5rem, 6vw, 4rem);
-  border: 1px solid var(--ink);
-  background: var(--ink);
+  border: 1px solid var(--frost-border);
+  background: var(--panel);
   position: relative;
 }
 
@@ -328,10 +382,10 @@ a {
 .playground-caption {
   margin: 0;
   padding: 0.9rem 1.1rem;
-  border-top: 1px solid rgba(231, 228, 220, 0.18);
+  border-top: 1px solid var(--line);
   font-family: var(--font-mono);
   font-size: 0.78rem;
-  color: var(--accent-soft);
+  color: var(--ice-dim);
   max-width: 56ch;
 }
 
@@ -354,6 +408,7 @@ a {
   font-size: clamp(1.1rem, 2.2vw, 1.4rem);
   line-height: 1.5;
   margin: 0 0 2.5rem;
+  color: var(--ice);
 }
 
 .about-cols {
@@ -363,10 +418,14 @@ a {
   max-width: 60rem;
 }
 
+.about-cols p {
+  color: var(--ice-dim);
+}
+
 .about-label {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: var(--ink-soft);
+  color: var(--cyan);
   margin: 0 0 0.35rem;
 }
 
@@ -394,13 +453,13 @@ a {
   font-weight: 700;
   font-size: clamp(1.75rem, 6vw, 3.5rem);
   letter-spacing: -0.02em;
-  border-bottom: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ice);
   transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .contact-link:hover {
-  color: var(--accent);
-  border-color: var(--accent);
+  color: var(--cyan);
+  border-color: var(--cyan);
 }
 
 .contact-social {
@@ -412,11 +471,14 @@ a {
 }
 
 .contact-social a {
+  color: var(--ice-dim);
   border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .contact-social a:hover {
-  border-color: var(--ink);
+  color: var(--cyan);
+  border-color: var(--cyan);
 }
 
 /* ===================================================================
@@ -430,14 +492,18 @@ a {
   padding: 1.5rem var(--gutter) 2rem;
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: var(--ink-soft);
+  color: var(--ice-dim);
+}
+
+.site-footer a:hover {
+  color: var(--cyan);
 }
 
 /* ===================================================================
    Accessibility: visible focus states
    =================================================================== */
 a:focus-visible,
-.work-row:focus-visible {
-  outline: 2px solid var(--accent);
+.ice-block:focus-visible {
+  outline: 2px solid var(--cyan);
   outline-offset: 3px;
 }
