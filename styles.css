@@ -1,0 +1,410 @@
+/* ===================================================================
+   Design tokens
+   =================================================================== */
+:root {
+  --paper: #E7E4DC;
+  --ink: #16150F;
+  --ink-soft: #55534A;
+  --accent: #2A3EFF;
+  --accent-soft: #C7CDFF;
+  --line: #B6B2A6;
+
+  --font-display: "Bricolage Grotesque", sans-serif;
+  --font-body: "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  --gutter: 6vw;
+  --grid-cols: 12;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+/* faint specimen-sheet grid, purely decorative */
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, rgba(22,21,15,0.05) 1px, transparent 1px);
+  background-size: calc((100% - 2 * var(--gutter)) / var(--grid-cols)) 100%;
+  background-position: var(--gutter) 0;
+}
+
+/* ===================================================================
+   Header
+   =================================================================== */
+.site-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.75rem var(--gutter);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+.mark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: -0.02em;
+}
+
+.site-nav {
+  display: flex;
+  gap: 2rem;
+}
+
+.site-nav a {
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.site-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 1px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.25s ease;
+}
+
+.site-nav a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ===================================================================
+   Hero
+   =================================================================== */
+.hero {
+  position: relative;
+  z-index: 1;
+  padding: clamp(3rem, 10vw, 7rem) var(--gutter) clamp(2rem, 6vw, 4rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.hero-meta {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin: 0 0 1.25rem;
+}
+
+.hero-name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(3.5rem, 12vw, 9rem);
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+  margin: 0 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-role {
+  max-width: 42ch;
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ===================================================================
+   Marquee — the one orchestrated motion moment
+   =================================================================== */
+.marquee {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.85rem 0;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  white-space: nowrap;
+  animation: scroll-left 26s linear infinite;
+}
+
+.marquee-track span {
+  color: var(--accent-soft);
+}
+
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ===================================================================
+   Section head, shared
+   =================================================================== */
+.section-head {
+  padding: clamp(2.5rem, 6vw, 4rem) var(--gutter) 1.5rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.section-head h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.section-head p {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ===================================================================
+   Work list
+   =================================================================== */
+.work {
+  position: relative;
+  z-index: 1;
+  border-bottom: 1px solid var(--line);
+}
+
+.work-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 var(--gutter) 1rem;
+}
+
+.work-row {
+  display: grid;
+  grid-template-columns: 3rem 1fr auto auto;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding: 1.35rem 0;
+  border-top: 1px solid var(--line);
+  cursor: pointer;
+  transition: padding-left 0.2s ease, color 0.2s ease;
+}
+
+.work-row:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.work-row:hover {
+  padding-left: 0.75rem;
+  color: var(--accent);
+}
+
+.work-index {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.work-row:hover .work-index {
+  color: var(--accent);
+}
+
+.work-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+  letter-spacing: -0.01em;
+}
+
+.work-tags {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  justify-self: end;
+}
+
+.work-year {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 640px) {
+  .work-row {
+    grid-template-columns: 2rem 1fr;
+    row-gap: 0.35rem;
+  }
+  .work-tags, .work-year { justify-self: start; }
+}
+
+/* floating cursor preview swatch — replace bg gradients with real project images */
+.cursor-preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 150px;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.92);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  border: 1px solid var(--ink);
+}
+
+.cursor-preview.visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.cursor-preview[data-swatch="1"] { background: linear-gradient(135deg, #2A3EFF, #C7CDFF); }
+.cursor-preview[data-swatch="2"] { background: linear-gradient(135deg, #16150F, #55534A); }
+.cursor-preview[data-swatch="3"] { background: linear-gradient(135deg, #E7E4DC, #B6B2A6); }
+.cursor-preview[data-swatch="4"] { background: linear-gradient(135deg, #C7CDFF, #2A3EFF); }
+
+/* ===================================================================
+   About
+   =================================================================== */
+.about {
+  position: relative;
+  z-index: 1;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.about-body {
+  padding: 0 var(--gutter) 3rem;
+}
+
+.about-lede {
+  max-width: 62ch;
+  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+  line-height: 1.5;
+  margin: 0 0 2.5rem;
+}
+
+.about-cols {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  max-width: 60rem;
+}
+
+.about-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  margin: 0 0 0.35rem;
+}
+
+.about-cols p:last-child {
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .about-cols { grid-template-columns: 1fr; }
+}
+
+/* ===================================================================
+   Contact
+   =================================================================== */
+.contact {
+  position: relative;
+  z-index: 1;
+  padding-bottom: clamp(3rem, 8vw, 6rem);
+}
+
+.contact-link {
+  display: inline-block;
+  margin: 0 var(--gutter) 1.5rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 6vw, 3.5rem);
+  letter-spacing: -0.02em;
+  border-bottom: 2px solid var(--ink);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.contact-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.contact-social {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0 var(--gutter);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+.contact-social a {
+  border-bottom: 1px solid transparent;
+}
+
+.contact-social a:hover {
+  border-color: var(--ink);
+}
+
+/* ===================================================================
+   Footer
+   =================================================================== */
+.site-footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem var(--gutter) 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+/* ===================================================================
+   Accessibility: visible focus states
+   =================================================================== */
+a:focus-visible,
+.work-row:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
